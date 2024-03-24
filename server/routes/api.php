@@ -17,6 +17,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::post('/recipes/{recipe}/like', [LikeController::class, 'like']);
     Route::apiResource('recipes', RecipeController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::put('/change-password', [UserController::class, 'change_password']);
     Route::put('/update-name-email/{user}', [UserController::class, 'update_name_email']);
     Route::get('/users/{user}/recipes', [UserController::class, 'user_recipes']);
 });

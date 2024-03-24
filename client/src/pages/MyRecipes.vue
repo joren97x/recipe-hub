@@ -25,6 +25,8 @@
         methods: ['']
     })
 
+    const updateRecipeForm = ref(null)
+
     function createRecipe() {
         createButton.value = true
         api.post('/recipes', recipeForm, {
@@ -72,7 +74,7 @@
 
     function updateRecipe() {
         editButton.value = true
-        api.put(`/recipes/${selectedRecipe.value.id}`, {
+        api.put(`/recipes/${updateRecipeForm.value.id}`, updateRecipeForm.value, {
             headers: {
                 Authorization: `Bearer ${authStore.getToken}`
             }
@@ -102,6 +104,13 @@
         getRecipes()
     })
 
+    function showEditDialog(recipe) {
+        editDialog.value = true; 
+        updateRecipeForm.value = recipe;
+        updateRecipeForm.value.ingredients = JSON.parse(recipe.ingredients)
+        updateRecipeForm.value.methods = JSON.parse(recipe.methods)
+    }
+
     function getRecipes() {
         api.get(`/users/${authStore.auth.id}/recipes`, {
             headers: {
@@ -127,7 +136,6 @@
             </v-row>
             
             <v-row v-if="recipes">
-                
                 <v-col cols="4" v-for="recipe in recipes" :key="recipe.id">
                     <v-card max-width="374">
                         <v-img height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png" cover></v-img>
@@ -137,12 +145,12 @@
                             <template v-slot:append>
                                 <v-tooltip text="Edit recipe" location="top">
                                     <template v-slot:activator="{ props }">
-                                        <v-btn icon="mdi-square-edit-outline" @click="() => { editDialog = true; selectedRecipe = recipe }" v-bind="props" size="small" variant="text"></v-btn>
+                                        <v-btn icon="mdi-square-edit-outline" @click="showEditDialog(recipe)" v-bind="props" size="small" variant="text"></v-btn>
                                     </template>
                                 </v-tooltip>
                                 <v-tooltip text="Delete recipe" location="top">
                                     <template v-slot:activator="{ props }">
-                                        <v-btn icon="mdi-delete-outline" color="red" @click="() => { deleteDialog = true; selectedRecipe = recipe }" size="small" v-bind="props" variant="text"></v-btn>
+                                        <v-btn icon="mdi-delete-outline" color="red" @click="() => { deleteDialog = true; selectedRecipe = recipe; }" size="small" v-bind="props" variant="text"></v-btn>
                                     </template>
                                 </v-tooltip>
                             </template>
@@ -172,11 +180,34 @@
                     <v-skeleton-loader type="image, table-tfoot, list-item-two-line, button"></v-skeleton-loader>
                 </v-col>
             </v-row>
+            
+            <p v-if="recipes?.length == 0" class="my-6"> You currently dont have any recipes lil bro </p>
         </v-container>
         <v-dialog v-model="editDialog">
             <v-card title="Edit recipe">
                 <v-card-item>
-                    {{ selectedRecipe }}
+                    {{ updateRecipeForm }}
+                    {{selectedRecipe}}
+                    <v-row>
+                        <v-col cols="6">
+                            <v-file-input label="Upload image..." @change="handleFileChange" variant="solo-filled"></v-file-input>
+                            <div style="height: 400px; width: 100%" class="bg-grey"></div>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-text-field variant="solo-filled" label="Name" v-model="updateRecipeForm.name"></v-text-field>
+                            <v-textarea variant="solo-filled" label="Description" rows="1" auto-grow v-model="updateRecipeForm.description"></v-textarea>
+                            <p>Ingredients</p>
+                            <div v-for="(ingredient, index) in updateRecipeForm.ingredients" :key="index">
+                                <v-text-field label="Ingredient" variant="solo-filled" v-model="updateRecipeForm.ingredients[index]"></v-text-field>
+                            </div>
+                            <v-btn prepend-icon="mdi-plus" block class="text-white" color="green-lighten-2" @click="updateRecipeForm.ingredients.push('')">Add ingredient</v-btn>
+                            <p>Methods</p>
+                            <div v-for="(method, index) in updateRecipeForm.methods" :key="index">
+                                <v-text-field label="Method" variant="solo-filled" v-model="updateRecipeForm.methods[index]"></v-text-field>
+                            </div>
+                            <v-btn prepend-icon="mdi-plus" block class="text-white" color="green-lighten-2" @click="updateRecipeForm.methods.push('')">Add method</v-btn>
+                        </v-col>
+                    </v-row>
                 </v-card-item>
                 <v-card-actions>
                     <v-spacer/>
