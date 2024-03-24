@@ -20,9 +20,17 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::put('/change-password', [UserController::class, 'change_password']);
     Route::put('/update-name-email/{user}', [UserController::class, 'update_name_email']);
     Route::get('/users/{user}/recipes', [UserController::class, 'user_recipes']);
+    Route::post('/upload', function(Request $request) {
+        $request->validate([
+            'file' => 'required',
+        ]);
+        $request->file->move(public_path('/images'), $request->file->getClientOriginalName());
+        return response(['message' => 'File uploaded'], 200);
+    });
 });
 
 Route::get('/search/{q}', [RecipeController::class, 'search']);
 Route::apiResource('recipes', RecipeController::class)->only(['index', 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+

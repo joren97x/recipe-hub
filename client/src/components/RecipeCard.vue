@@ -2,12 +2,13 @@
 
     defineProps({ recipe: Number})
     import { formatDistance } from 'date-fns'
+    const BASE_IMAGE_URL = process.env.VUE_APP_BASE_IMAGE_URL
 
 </script>
 
 <template>
     <v-card max-width="374">
-        <v-img height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png" cover></v-img>
+        <v-img height="250" :src="`${BASE_IMAGE_URL}/${recipe.image}`" cover></v-img>
     
         <v-card-item>
             <v-card-title>{{ recipe.name }}</v-card-title>

@@ -23,7 +23,7 @@
             </v-row>
             <v-divider/>
             <p class="text-h4 mt-10 font-weight-bold text-center">Lorem ipsum dolor. 
-                <span id="linear">Dolores, numquam.</span>
+                <span id="linear">Skibidi, toilet.</span>
             </p>
             <v-row>
                 <v-col cols="6" id="dumbass_div">

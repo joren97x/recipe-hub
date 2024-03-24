@@ -1,10 +1,28 @@
 <script setup>
 
+    import { ref } from 'vue'
+    import api from '@/axios'
+
+    function handleFile(event) {
+        console.log(event)
+        const file = new FormData()
+        file.append('file', event.target.files[0])
+
+        api.post('/upload', file)
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.error(err)
+        })
+    } 
 
 </script>
 
 <template>
     <div>
+        <v-file-input @change="handleFile"></v-file-input>
+        {{ file }}
         <pre class="my-5">
             <p class="font-weight-bold">            Superpowers</p>
             Oh, you got power, superpowers

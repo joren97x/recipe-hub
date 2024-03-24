@@ -5,6 +5,7 @@
     import { useAuthStore } from '../stores/authStore'
     import { formatDistance } from 'date-fns'
 
+    const BASE_IMAGE_URL = process.env.VUE_APP_BASE_IMAGE_URL
     const authStore = useAuthStore()
     const snackbar = ref(false)
     const recipes = ref(null)
@@ -16,6 +17,7 @@
     const editButton = ref(false)
     const deleteButton = ref(false)
     const createButton = ref(false)
+    const fileImage = ref(null)
     const recipeForm = reactive({
         user_id: authStore.auth.id,
         name: null,
@@ -29,6 +31,7 @@
 
     function createRecipe() {
         createButton.value = true
+        uploadFile(fileImage.value)
         api.post('/recipes', recipeForm, {
             headers: {
                 Authorization: `Bearer ${authStore.getToken}`
@@ -74,6 +77,7 @@
 
     function updateRecipe() {
         editButton.value = true
+        uploadFile(fileImage.value)
         api.put(`/recipes/${updateRecipeForm.value.id}`, updateRecipeForm.value, {
             headers: {
                 Authorization: `Bearer ${authStore.getToken}`
@@ -93,11 +97,33 @@
         })
     }
 
-    function handleFileChange(event) {
-        const file = event.target.files[0]
-        if (file) {
-            recipeForm.image = file.name
-        }
+    function handleCreateFileChange(event) {
+        const file = new FormData()
+        file.append('file', event.target.files[0])
+        fileImage.value = file
+        recipeForm.image = event.target.files[0].name
+    }
+
+    function uploadFile(file) {
+        api.post('/upload', file, {
+            headers: {
+                Authorization: `Bearer ${authStore.getToken}`
+            }
+        })
+        .then((res) => {
+            console.log(res)
+            fileImage.value = null
+        })
+        .catch((err) => {
+            console.error(err)
+        })
+    }
+
+    function handleEditFileChange(event) {
+        const file = new FormData()
+        file.append('file', event.target.files[0])
+        fileImage.value = file
+        updateRecipeForm.value.image = event.target.files[0].name
     }
 
     onMounted(() => {
@@ -138,7 +164,7 @@
             <v-row v-if="recipes">
                 <v-col cols="4" v-for="recipe in recipes" :key="recipe.id">
                     <v-card max-width="374">
-                        <v-img height="250" src="https://cdn.vuetifyjs.com/images/cards/cooking.png" cover></v-img>
+                        <v-img height="250" :src="`${BASE_IMAGE_URL}/${recipe.image}`" cover></v-img>
                     
                         <v-list-item>
                             {{ recipe.name }}
@@ -188,8 +214,8 @@
                 <v-card-item>
                     <v-row>
                         <v-col cols="6">
-                            <v-file-input label="Upload image..." @change="handleFileChange" variant="solo-filled"></v-file-input>
-                            <div style="height: 400px; width: 100%" class="bg-grey"></div>
+                            <v-file-input label="Upload image..." @change="handleEditFileChange" variant="solo-filled" accept="image/*" counter show-size persistent-hint hint="Make sure the image is located at src/public"></v-file-input>
+                            <v-img height="400" width="100%" :src="`${BASE_IMAGE_URL}/${updateRecipeForm.image}`" cover></v-img>
                         </v-col>
                         <v-col cols="6">
                             <v-text-field variant="solo-filled" label="Name" v-model="updateRecipeForm.name"></v-text-field>
@@ -220,7 +246,7 @@
                     <v-alert :title="selectedRecipe.name">
                         <template v-slot:prepend>
                             <v-avatar color="grey" rounded="0"  size="150">
-                                <v-img src="https://cdn.vuetifyjs.com/images/cards/cooking.png" cover></v-img>
+                                <v-img :src="`${BASE_IMAGE_URL}/${selectedRecipe.image}`" cover></v-img>
                             </v-avatar>
                         </template>
                         <template v-slot:append>
@@ -240,20 +266,21 @@
         <v-dialog v-model="createDialog">
             <v-card title="Create recipe">
                 <v-card-item>
+                    {{ recipeForm }}
                     <v-row>
                         <v-col cols="6">
-                            <v-file-input label="Upload image..." @change="handleFileChange" variant="solo-filled"></v-file-input>
+                            <v-file-input label="Upload image..." @change="handleCreateFileChange" variant="solo-filled" accept="image/*" counter show-size persistent-hint hint="Make sure the image is located at src/public"></v-file-input>
                             <div style="height: 400px; width: 100%" class="bg-grey"></div>
                         </v-col>
                         <v-col cols="6">
                             <v-text-field variant="solo-filled" label="Name" v-model="recipeForm.name"></v-text-field>
                             <v-textarea variant="solo-filled" label="Description" rows="1" auto-grow v-model="recipeForm.description"></v-textarea>
-                            <p>Ingredients</p>
+                            <p class="mb-3">Ingredients</p>
                             <div v-for="(ingredient, index) in recipeForm.ingredients" :key="index">
                                 <v-text-field label="Ingredient" variant="solo-filled" v-model="recipeForm.ingredients[index]"></v-text-field>
                             </div>
                             <v-btn prepend-icon="mdi-plus" block class="text-white" color="green-lighten-2" @click="recipeForm.ingredients.push('')">Add ingredient</v-btn>
-                            <p>Methods</p>
+                            <p class="my-3">Methods</p>
                             <div v-for="(method, index) in recipeForm.methods" :key="index">
                                 <v-text-field label="Method" variant="solo-filled" v-model="recipeForm.methods[index]"></v-text-field>
                             </div>

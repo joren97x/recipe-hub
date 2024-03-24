@@ -4,10 +4,10 @@
     import api from '../axios.js'
     import { useAuthStore } from '../stores/authStore.js'
     import RecipeCard from '../components/RecipeCard.vue'
+    console.log(process.env)
 
     const authStore = useAuthStore()
     const data = ref(null)
-
     onMounted(() => {
         api.get('/recipes')
         .then((res) => {

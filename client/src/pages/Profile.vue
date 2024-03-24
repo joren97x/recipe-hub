@@ -53,7 +53,7 @@
                             <v-text-field variant="solo-filled" label="Confirm password" v-model="passwordForm.new_password_confirmation"></v-text-field>
                         </v-card-item>
                         <v-card-actions>
-                            <v-btn variant="flat" color="orange" :loading="passwordButtonLoading" @click="changePassword()">Save</v-btn>
+                            <v-btn variant="flat" class="text-white" color="orange" :loading="passwordButtonLoading" @click="changePassword()">Save</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
