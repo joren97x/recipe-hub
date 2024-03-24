@@ -25,12 +25,7 @@
     </div>
 
     <div class="pt-0">
-        True story. As I walked inside sports complex, 37 women rushed to me and pulled
-         their pants off tryna flash me their Coochie. I replied sternly “Haram”. All 37 women were 
-         so shook all their clothes came off in a swift attack caused my aura. My friend who watches 
-         Jujutsu Kaisen did not accept this tomfoolery and unsheathed his domain "Domain Expansion: Malevolent Kitchen" and cut them 
-         into pieces causing a crimson rainfall reminiscent of your mother's period once a month(mura ug sukuna ba). Dare 
-         I say, it was a bloody good day.
+       Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque aspernatur quibusdam ipsum maxime voluptatum repudiandae voluptas! Ad exercitationem pariatur doloremque ipsam aut iusto magnam iste ratione veritatis! Optio repellendus cum animi minus ipsa tempore cupiditate, unde eos a eum rerum totam. Suscipit saepe consectetur laboriosam voluptates omnis cupiditate excepturi optio.
     </div>
 
     <v-divider></v-divider>

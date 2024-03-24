@@ -45,6 +45,20 @@ class UserController extends Controller
         //
     }
 
+    public function update_name_email(Request $request, User $user) {
+        $request->validate([
+            'name' => 'required',
+            'email' => ['required', 'email', 'unique:users']
+        ]);
+
+        $user->email = $request->email;
+        $user->name = $request->name;
+        $user->update();
+
+        return response(['message' => 'Name and email updated successfully', 'user' => $user], 200);
+
+    }
+
     /**
      * Remove the specified resource from storage.
      */

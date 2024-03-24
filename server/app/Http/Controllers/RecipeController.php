@@ -26,9 +26,9 @@ class RecipeController extends Controller
     {
         //
         $requestData = $request->all();
-
         $requestData['ingredients'] = json_encode($requestData['ingredients']);
         $requestData['methods'] = json_encode($requestData['methods']);
+        // return $requestData;
 
         return Recipe::create($requestData);
     }
@@ -39,10 +39,9 @@ class RecipeController extends Controller
     public function show(string $id)
     {
         //
-        $recipe = Recipe::find($id);
+        $recipe = Recipe::with(['user', 'userLikes.user'])->find($id);
         if($recipe) {
             $recipe->increment('views');
-            $recipe->load('user');
         }
         return $recipe;
     }

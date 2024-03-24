@@ -21,6 +21,12 @@ const routes = [
             { 
                 path: 'my-recipes', 
                 component: () => import('../pages/MyRecipes.vue'),
+                meta: { requiresAuth: true }
+            },
+            { 
+                path: 'profile', 
+                component: () => import('../pages/Profile.vue'),
+                meta: { requiresAuth: true }
             },
             { 
                 path: 'about', 

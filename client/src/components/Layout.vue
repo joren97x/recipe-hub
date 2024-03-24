@@ -12,6 +12,7 @@
         localStorage.removeItem('token')
         authStore.token = localStorage.getItem('token')
         authStore.auth = localStorage.getItem('auth')
+        router.push('/login')
     }
 
 </script>
@@ -32,6 +33,7 @@
             </template>
             <template v-else>
                 <v-btn class="text-grey-darken-2" to="/my-recipes"> My recipes </v-btn>
+                <v-btn class="text-grey-darken-2" to="/profile"> Profile </v-btn>
                 <v-btn @click="logout()" prepend-icon="mdi-logout" color="red"> Logout </v-btn>
             </template>
         </v-toolbar>

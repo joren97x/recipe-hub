@@ -13,26 +13,30 @@
         email: null,
         password: null
     })
+    const error = ref(null)
 
     function login() {
         try {
             loginButtonLoading.value = true
             api.post('/login', form).then((res) => {
                 loginButtonLoading.value = true
-                authStore.setAuth(res.data.user)
-                authStore.setToken(res.data.token)
-                localStorage.setItem('auth', JSON.stringify(res.data.user))
-                localStorage.setItem('token', JSON.stringify(res.data.token))
+                authStore.setAuth(res.data)
+                // authStore.setUser(res.data.user)
+                // authStore.setToken(res.data.token)
+                // localStorage.setItem('auth', JSON.stringify(res.data.user))
+                // localStorage.setItem('token', JSON.stringify(res.data.token))
                 router.push('/')
             }).catch((err) => {
                 loginButtonLoading.value = false
                 console.error(err)
+                error.value = err.response.data.message
             })
 
         }
         catch(err) {
             loginButtonLoading.value = false
             console.error(err)
+            error.value = err.response.data.message
         }
     }
 
@@ -48,7 +52,7 @@
                         Login
                     </v-card-title>
                     <v-card-item>
-                        <v-text-field variant="solo-filled" label="Email" v-model="form.email"></v-text-field>
+                        <v-text-field variant="solo-filled" :error="error" :error-messages="error" label="Email" v-model="form.email"></v-text-field>
                         <v-text-field variant="solo-filled" :type="showPassword ? '' : 'password'" label="Password" v-model="form.password">
                             <template v-slot:append-inner>
                                 <v-btn variant="text" :icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'" @click="showPassword = !showPassword"></v-btn>

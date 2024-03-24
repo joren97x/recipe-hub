@@ -20,10 +20,11 @@
             registerButtonLoading.value = true
             api.post('/register', form).then((res) => {
                 registerButtonLoading.value = true
-                authStore.setAuth(res.data.user)
-                authStore.setToken(res.data.token)
-                localStorage.setItem('auth', JSON.stringify(res.data.user))
-                localStorage.setItem('token', JSON.stringify(res.data.token))
+                authStore.setAuth(res.data)
+                // authStore.setAuth(res.data.user)
+                // authStore.setToken(res.data.token)
+                // localStorage.setItem('auth', JSON.stringify(res.data.user))
+                // localStorage.setItem('token', JSON.stringify(res.data.token))
                 router.push('/')
             }).catch((err) => {
                 registerButtonLoading.value = false

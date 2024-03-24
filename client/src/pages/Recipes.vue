@@ -23,9 +23,14 @@
 <template>
     <v-container fluid style="background-color: rgb(255,240,233);">
         <v-container>
-            <v-row  v-if="data">
+            <v-row v-if="data">
                 <v-col cols="4" v-for="recipe in data.recipes" :key="recipe.id">
                     <RecipeCard :recipe="recipe"/>
+                </v-col>
+            </v-row>
+            <v-row v-else>
+                <v-col cols="4" v-for="n in 3" :key="n" >
+                    <v-skeleton-loader type="image, list-item-three-line, button, button"></v-skeleton-loader>
                 </v-col>
             </v-row>
         </v-container>
