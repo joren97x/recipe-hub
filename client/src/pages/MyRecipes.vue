@@ -186,8 +186,6 @@
         <v-dialog v-model="editDialog">
             <v-card title="Edit recipe">
                 <v-card-item>
-                    {{ updateRecipeForm }}
-                    {{selectedRecipe}}
                     <v-row>
                         <v-col cols="6">
                             <v-file-input label="Upload image..." @change="handleFileChange" variant="solo-filled"></v-file-input>
@@ -242,7 +240,6 @@
         <v-dialog v-model="createDialog">
             <v-card title="Create recipe">
                 <v-card-item>
-                    {{ recipeForm }}
                     <v-row>
                         <v-col cols="6">
                             <v-file-input label="Upload image..." @change="handleFileChange" variant="solo-filled"></v-file-input>

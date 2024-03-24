@@ -18,7 +18,8 @@
     function login() {
         try {
             loginButtonLoading.value = true
-            api.post('/login', form).then((res) => {
+            api.post('/login', form)
+            .then((res) => {
                 loginButtonLoading.value = true
                 authStore.setAuth(res.data)
                 // authStore.setUser(res.data.user)
@@ -43,7 +44,7 @@
 </script>
 
 <template>
-    <v-container fluid style="background-color: rgb(217, 237, 191)">
+    <v-container fluid style="background-color: rgb(217, 237, 191); height: 100vh">
         <v-btn prepend-icon="mdi-arrow-left" variant="flat" class="text-white" color="orange" to="/">Go back</v-btn>
         <v-row justify="center">
             <v-col cols="6" class="mx-6">

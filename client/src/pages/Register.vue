@@ -18,7 +18,8 @@
     function register() {
         try {
             registerButtonLoading.value = true
-            api.post('/register', form).then((res) => {
+            api.post('/register', form)
+            .then((res) => {
                 registerButtonLoading.value = true
                 authStore.setAuth(res.data)
                 // authStore.setAuth(res.data.user)
@@ -42,7 +43,7 @@
 </script>
 
 <template>
-    <v-container fluid style="background-color: rgb(217, 237, 191)">
+    <v-container fluid style="background-color: rgb(217, 237, 191); height: 100vh">
         <v-btn prepend-icon="mdi-arrow-left" variant="flat" class="text-white" color="orange" to="/">Go back</v-btn>
         <v-row justify="center">
             <v-col cols="6">

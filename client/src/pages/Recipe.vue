@@ -1,7 +1,7 @@
 <script setup>
 
     import { useRoute, useRouter } from "vue-router"
-    import { computed, onMounted, ref } from 'vue'
+    import { computed, onMounted, onUpdated, ref } from 'vue'
     import api from "../axios"
     import { format } from 'date-fns'
     import { useAuthStore } from "@/stores/authStore"
@@ -34,14 +34,20 @@
     }
 
     const liked = computed(() => {
-        return recipe.value?.user_likes.find(like => like.user_id === authStore.auth.id)
+        return authStore.auth && recipe.value?.user_likes.find(like => like.user_id === authStore.auth.id)
     })
 
     onMounted(() => {
         getRecipe()
     })
 
+    onUpdated(() => {
+        console.log('update')
+        getRecipe()
+    })
+
     function getRecipe() {
+        console.log(route.params)
         api.get(`/recipes/${route.params.id}`)
         .then((res) => {
             recipe.value = res.data
@@ -114,12 +120,13 @@
         <v-dialog v-model="viewLikes"  width="50%">
             <v-card>
                 <v-list-item>
-                    <p>People who liked this shit</p>
+                    <p>People who liked this</p>
                     <template v-slot:append>
                         <v-btn round variant="flat" icon="mdi-close" @click="viewLikes = false"></v-btn>
                     </template>
                 </v-list-item>
                 <v-card-item v-if="recipe" class="mb-4">
+                    <p v-if="recipe.user_likes.length == 0"> sadly, no one liked this recipe :/</p>
                     <v-list>
                         <v-list-item append-icon="mdi-heart" :subtitle="format(like.created_at, 'PPPPp')" v-for="like in recipe.user_likes" :key="like.id" :title="like.user.name" >
                         </v-list-item>

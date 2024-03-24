@@ -46,6 +46,10 @@ class RecipeController extends Controller
         return $recipe;
     }
 
+    public function search(string $q) {
+        return Recipe::select('id', 'name')->where('name', 'like', '%' . $q . '%')->get();
+    }
+
     /**
      * Update the specified resource in storage.
      */

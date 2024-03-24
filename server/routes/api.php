@@ -22,6 +22,7 @@ Route::group(['middleware' => 'auth:sanctum'], function() {
     Route::get('/users/{user}/recipes', [UserController::class, 'user_recipes']);
 });
 
+Route::get('/search/{q}', [RecipeController::class, 'search']);
 Route::apiResource('recipes', RecipeController::class)->only(['index', 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
