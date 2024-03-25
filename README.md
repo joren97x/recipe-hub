@@ -5,9 +5,16 @@ True story. As I walked inside sports complex, 37 women rushed to me and pulled 
 
 Requirements
 > vue-cli
+```bash
+https://cli.vuejs.org/guide/installation.html
+```
 > composer
+```bash
+just search composer in google bruh
+```
 
 put the project in xampp/htdocs 
+make sure xampp mysql is turned on  
 open the folder in vs code
 
 open a new terminal 
