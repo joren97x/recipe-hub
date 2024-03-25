@@ -51,11 +51,13 @@ IF the project name is recipe-hub-master
 then go to client folder
 go to .env file
 change the url to 
-> http://localhost/recipe-hub-master/server/public/images  
+> http://localhost/recipe-hub-master/server/public/images
+#  
 and in src folder
 go to axios.js
 change the baseUrl to
-> http://localhost/recipe-hub-master/server/public/images  
+> http://localhost/recipe-hub-master/server/public/images
+#  
 then run
 ```bash
 npm run serve
