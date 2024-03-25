@@ -46,10 +46,9 @@ save it and run this
 php artisan migrate
 ```
 
-
+### client
 in a new terminal
 > use bash or git bash
-### client
 ```bash
 cd client
 npm install
