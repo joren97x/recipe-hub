@@ -15,7 +15,7 @@ just search composer in google bruh
 
 put the project in xampp/htdocs 
 make sure xampp mysql is turned on  
-open the folder in vs code
+open the project in vs code
 
 
 ### SERVER
