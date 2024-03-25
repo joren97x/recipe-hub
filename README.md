@@ -18,7 +18,7 @@ make sure xampp mysql is turned on
 open the folder in vs code
 
 
-### server
+### SERVER
 open a new terminal 
 > use bash or git bash
 ```bash
@@ -27,7 +27,7 @@ composer update
 cp .env.example .env
 php artisan key:generate
 ```
-at .env file 
+at server folder go to .env file 
 replace the line 22 to 27 to this
 ```bash
 DB_CONNECTION=mysql
@@ -46,7 +46,7 @@ save it and run this
 php artisan migrate
 ```
 
-### client
+### CLIENT
 in a new terminal
 > use bash or git bash
 ```bash
