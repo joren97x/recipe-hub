@@ -15,11 +15,14 @@
         password: null
     })
 
+    const errors = ref(null)
+
     function register() {
         try {
             registerButtonLoading.value = true
             api.post('/register', form)
             .then((res) => {
+                console.log(res)
                 registerButtonLoading.value = true
                 authStore.setAuth(res.data)
                 // authStore.setAuth(res.data.user)
@@ -28,6 +31,13 @@
                 // localStorage.setItem('token', JSON.stringify(res.data.token))
                 router.push('/')
             }).catch((err) => {
+                console.log(err)
+                if(err.response) {
+                    errors.value = err.response.data.errors
+                }
+                else {
+                    errors.value = { server: 'Internal server error' }
+                }
                 registerButtonLoading.value = false
                 console.error(err)
             })
@@ -52,9 +62,12 @@
                         Register
                     </v-card-title>
                     <v-card-item>
-                        <v-text-field variant="solo-filled" label="Email" v-model="form.email"></v-text-field>
-                        <v-text-field variant="solo-filled" label="Name" v-model="form.name"></v-text-field>
-                        <v-text-field variant="solo-filled" :type="showPassword ? '' : 'password'" label="Password" v-model="form.password">
+                        <v-alert class="mb-3" v-if="errors?.server" :title="errors.server" icon="mdi-alert" color="red-lighten-2">
+                            Did you turn on xampp lil bro?
+                        </v-alert>
+                        <v-text-field :error-messages="errors?.email" variant="solo-filled" label="Email" v-model="form.email"></v-text-field>
+                        <v-text-field :error-messages="errors?.name" variant="solo-filled" label="Name" v-model="form.name"></v-text-field>
+                        <v-text-field :error-messages="errors?.password" variant="solo-filled" :type="showPassword ? '' : 'password'" label="Password" v-model="form.password">
                             <template v-slot:append-inner>
                                 <v-btn variant="text" :icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'" @click="showPassword = !showPassword"></v-btn>
                             </template>

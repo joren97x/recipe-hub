@@ -13,7 +13,7 @@
         email: null,
         password: null
     })
-    const error = ref(null)
+    const errors = ref(null)
 
     function login() {
         try {
@@ -30,14 +30,22 @@
             }).catch((err) => {
                 loginButtonLoading.value = false
                 console.error(err)
-                error.value = err.response.data.message
+                if(err.response) {
+                    errors.value = err.response.data.errors
+                    if(!err.response.data.errors) {
+                        errors.value = { email: 'Invalid credentials' }
+                    }
+                }
+                else {
+                    errors.value = { server: 'Internal server error' }
+                }
             })
 
         }
         catch(err) {
             loginButtonLoading.value = false
             console.error(err)
-            error.value = err.response.data.message
+            errors.value = err.response.data.message
         }
     }
 
@@ -53,8 +61,11 @@
                         Login
                     </v-card-title>
                     <v-card-item>
-                        <v-text-field variant="solo-filled" :error="error" :error-messages="error" label="Email" v-model="form.email"></v-text-field>
-                        <v-text-field variant="solo-filled" :type="showPassword ? '' : 'password'" label="Password" v-model="form.password">
+                        <v-alert class="mb-3" v-if="errors?.server" :title="errors.server" icon="mdi-alert" color="red-lighten-2">
+                            Did you turn on xampp lil bro?
+                        </v-alert>
+                        <v-text-field variant="solo-filled" :error-messages="errors?.email" label="Email" v-model="form.email"></v-text-field>
+                        <v-text-field variant="solo-filled" :error-messages="errors?.password" :type="showPassword ? '' : 'password'" label="Password" v-model="form.password">
                             <template v-slot:append-inner>
                                 <v-btn variant="text" :icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'" @click="showPassword = !showPassword"></v-btn>
                             </template>

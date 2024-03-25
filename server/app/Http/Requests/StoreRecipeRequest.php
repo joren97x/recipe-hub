@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\AtLeastOneElementInArray;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRecipeRequest extends FormRequest
@@ -26,8 +27,8 @@ class StoreRecipeRequest extends FormRequest
             'name' => 'required',
             'image' => 'required',
             'description' => 'required',
-            'ingredients' => 'required',
-            'methods' => 'required'
+            'ingredients' => ['required', new AtLeastOneElementInArray],
+            'methods' => ['required', new AtLeastOneElementInArray]
         ];
     }
 }

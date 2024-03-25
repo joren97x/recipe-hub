@@ -4,7 +4,6 @@
     import api from '../axios.js'
     import { useAuthStore } from '../stores/authStore.js'
     import RecipeCard from '../components/RecipeCard.vue'
-    console.log(process.env)
 
     const authStore = useAuthStore()
     const data = ref(null)
@@ -33,6 +32,11 @@
                     <v-skeleton-loader type="image, list-item-three-line, button, button"></v-skeleton-loader>
                 </v-col>
             </v-row>
+            <div style="height: 60vh" class="text-center text-grey-darken-2" v-if="data?.recipes.length == 0">
+                <v-img src="https://fcbk.su/_data/stickers/bun/bun_05.png" style="margin-left: auto; margin-right: auto; margin-top: 10%;" height="100" width="100" cover></v-img>
+                <p class="my-4 text-h3"> No recipes found </p>
+                <p class="my-4 text-h6"> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos, omnis! </p>
+            </div>
         </v-container>
     </v-container>
 </template>

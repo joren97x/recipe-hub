@@ -7,6 +7,7 @@
     const passwordButtonLoading = ref(false)
     const authStore = useAuthStore()
     const snackbar = ref(false)
+    const errors = ref(null)
     const passwordForm = reactive({
         current_password: null,
         new_password: null,
@@ -21,6 +22,7 @@
             }
         })
         .then((res) => {
+            errors.value = null
             passwordForm.current_password = null
             passwordForm.new_password = null
             passwordForm.new_password_confirmation = null
@@ -29,6 +31,10 @@
             console.log(res)
         })
         .catch((err) => {
+            errors.value = err.response.data.errors
+            if(!err.response.data.errors)  {
+                errors.value = err.response.data
+            }
             passwordButtonLoading.value = false
             console.error(err)
         })
@@ -48,9 +54,9 @@
                 <v-col cols="6">
                     <v-card title="Change password">
                         <v-card-item>
-                            <v-text-field variant="solo-filled" label="Current password" v-model="passwordForm.current_password"></v-text-field>
-                            <v-text-field variant="solo-filled" label="New password" v-model="passwordForm.new_password"></v-text-field>
-                            <v-text-field variant="solo-filled" label="Confirm password" v-model="passwordForm.new_password_confirmation"></v-text-field>
+                            <v-text-field :error-messages="errors?.current_password" variant="solo-filled" label="Current password" v-model="passwordForm.current_password"></v-text-field>
+                            <v-text-field :error-messages="errors?.new_password" variant="solo-filled" label="New password" v-model="passwordForm.new_password"></v-text-field>
+                            <v-text-field :error-messages="errors?.new_password_confirmation" variant="solo-filled" label="Confirm password" v-model="passwordForm.new_password_confirmation"></v-text-field>
                         </v-card-item>
                         <v-card-actions>
                             <v-btn variant="flat" class="text-white" color="orange" :loading="passwordButtonLoading" @click="changePassword()">Save</v-btn>

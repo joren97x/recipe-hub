@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Recipe;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreRecipeRequest;
 use App\Http\Requests\UpdateRecipeRequest;
 
@@ -32,6 +33,16 @@ class RecipeController extends Controller
 
         return Recipe::create($requestData);
     }
+    // public function store(StoreRecipeRequest $request)
+    // {
+    //     //
+    //     $requestData = $request->all();
+    //     $requestData['ingredients'] = json_encode($requestData['ingredients']);
+    //     $requestData['methods'] = json_encode($requestData['methods']);
+    //     // return $requestData;
+
+    //     return Recipe::create($requestData);
+    // }
 
     /**
      * Display the specified resource.

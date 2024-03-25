@@ -6,6 +6,7 @@
     import { format } from 'date-fns'
     import { useAuthStore } from "@/stores/authStore"
 
+    const BASE_IMAGE_URL = process.env.VUE_APP_BASE_IMAGE_URL
     const authStore = useAuthStore()
     const route = useRoute()
     const recipe = ref(null)
@@ -64,7 +65,7 @@
         <v-container>
             <v-row>
                 <v-col cols="6">
-                    <v-img height="400" src="https://cdn.vuetifyjs.com/images/cards/cooking.png" cover></v-img>
+                    <v-img height="400" :src="`${BASE_IMAGE_URL}/${recipe?.image}`" cover></v-img>
                     <v-row class="mt-4 me-2">
                             <v-list-item :subtitle="recipe ? format(recipe.created_at, 'PPPPp') : ''" title="Joren"></v-list-item>
                             <v-spacer/>

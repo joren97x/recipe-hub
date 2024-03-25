@@ -18,6 +18,8 @@
     const deleteButton = ref(false)
     const createButton = ref(false)
     const fileImage = ref(null)
+    const createRecipeErrors = ref(null)
+    const editRecipeErrors = ref(null)
     const recipeForm = reactive({
         user_id: authStore.auth.id,
         name: null,
@@ -38,6 +40,7 @@
             }
         })
         .then((res) => {
+            createRecipeErrors.value = null
             createButton.value = false
             getRecipes()
             createDialog.value = false
@@ -50,6 +53,7 @@
             snackbar.value = true
         })
         .catch((err) => {
+            createRecipeErrors.value = err.response.data.errors
             createButton.value = false
             console.error(err)
         })
@@ -84,6 +88,7 @@
             }
         })
         .then((res) => {
+            editRecipeErrors.value = null
             editButton.value = false
             editDialog.value = false
             message.value = "Recipe updated"
@@ -92,6 +97,7 @@
             console.log(res)
         })
         .catch((err) => {
+            editRecipeErrors.value = err.response.data.errors
             editButton.value = false
             console.error(err)
         })
@@ -212,24 +218,31 @@
         <v-dialog v-model="editDialog">
             <v-card title="Edit recipe">
                 <v-card-item>
+                    {{ editRecipeErrors }}
                     <v-row>
                         <v-col cols="6">
-                            <v-file-input label="Upload image..." @change="handleEditFileChange" variant="solo-filled" accept="image/*" counter show-size persistent-hint hint="Make sure the image is located at src/public"></v-file-input>
+                            <v-file-input label="Upload image..." @change="handleEditFileChange" variant="solo-filled" accept="image/*" counter show-size></v-file-input>
                             <v-img height="400" width="100%" :src="`${BASE_IMAGE_URL}/${updateRecipeForm.image}`" cover></v-img>
                         </v-col>
                         <v-col cols="6">
-                            <v-text-field variant="solo-filled" label="Name" v-model="updateRecipeForm.name"></v-text-field>
-                            <v-textarea variant="solo-filled" label="Description" rows="1" auto-grow v-model="updateRecipeForm.description"></v-textarea>
+
+                            <v-text-field variant="solo-filled" label="Name" :error-messages="editRecipeErrors?.name" v-model="updateRecipeForm.name"></v-text-field>
+                            <v-textarea variant="solo-filled" label="Description" :error-messages="editRecipeErrors?.description" rows="1" auto-grow v-model="updateRecipeForm.description"></v-textarea>
+                            
                             <p>Ingredients</p>
+                            <p class="text-caption text-error" v-if="editRecipeErrors?.ingredients">{{ editRecipeErrors?.ingredients }}</p>
                             <div v-for="(ingredient, index) in updateRecipeForm.ingredients" :key="index">
                                 <v-text-field label="Ingredient" variant="solo-filled" v-model="updateRecipeForm.ingredients[index]"></v-text-field>
                             </div>
                             <v-btn prepend-icon="mdi-plus" block class="text-white" color="green-lighten-2" @click="updateRecipeForm.ingredients.push('')">Add ingredient</v-btn>
+                            
                             <p>Methods</p>
+                            <p class="text-caption text-error" v-if="editRecipeErrors?.methods">{{ editRecipeErrors?.methods }}</p>
                             <div v-for="(method, index) in updateRecipeForm.methods" :key="index">
                                 <v-text-field label="Method" variant="solo-filled" v-model="updateRecipeForm.methods[index]"></v-text-field>
                             </div>
                             <v-btn prepend-icon="mdi-plus" block class="text-white" color="green-lighten-2" @click="updateRecipeForm.methods.push('')">Add method</v-btn>
+                        
                         </v-col>
                     </v-row>
                 </v-card-item>
@@ -266,25 +279,30 @@
         <v-dialog v-model="createDialog">
             <v-card title="Create recipe">
                 <v-card-item>
-                    {{ recipeForm }}
                     <v-row>
                         <v-col cols="6">
-                            <v-file-input label="Upload image..." @change="handleCreateFileChange" variant="solo-filled" accept="image/*" counter show-size persistent-hint hint="Make sure the image is located at src/public"></v-file-input>
+                            <v-file-input label="Upload image..." :error-messages="createRecipeErrors?.image" @change="handleCreateFileChange" variant="solo-filled" accept="image/*" counter show-size></v-file-input>
                             <div style="height: 400px; width: 100%" class="bg-grey"></div>
                         </v-col>
                         <v-col cols="6">
-                            <v-text-field variant="solo-filled" label="Name" v-model="recipeForm.name"></v-text-field>
-                            <v-textarea variant="solo-filled" label="Description" rows="1" auto-grow v-model="recipeForm.description"></v-textarea>
+
+                            <v-text-field variant="solo-filled" label="Name" :error-messages="createRecipeErrors?.name" v-model="recipeForm.name"></v-text-field>
+                            <v-textarea variant="solo-filled" label="Description" :error-messages="createRecipeErrors?.description" rows="1" auto-grow v-model="recipeForm.description"></v-textarea>
+
                             <p class="mb-3">Ingredients</p>
+                            <p class="text-caption text-error" v-if="createRecipeErrors?.ingredients">{{ createRecipeErrors?.ingredients }}</p>
                             <div v-for="(ingredient, index) in recipeForm.ingredients" :key="index">
                                 <v-text-field label="Ingredient" variant="solo-filled" v-model="recipeForm.ingredients[index]"></v-text-field>
                             </div>
                             <v-btn prepend-icon="mdi-plus" block class="text-white" color="green-lighten-2" @click="recipeForm.ingredients.push('')">Add ingredient</v-btn>
+                            
                             <p class="my-3">Methods</p>
+                            <p class="text-caption text-error" v-if="createRecipeErrors?.methods">{{ createRecipeErrors?.methods }}</p>
                             <div v-for="(method, index) in recipeForm.methods" :key="index">
                                 <v-text-field label="Method" variant="solo-filled" v-model="recipeForm.methods[index]"></v-text-field>
                             </div>
                             <v-btn prepend-icon="mdi-plus" block class="text-white" color="green-lighten-2" @click="recipeForm.methods.push('')">Add method</v-btn>
+                        
                         </v-col>
                     </v-row>
                 </v-card-item>
