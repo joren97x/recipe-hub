@@ -17,10 +17,10 @@ put the project in xampp/htdocs
 make sure xampp mysql is turned on  
 open the folder in vs code
 
+
+### server
 open a new terminal 
 > use bash or git bash
-### server
-
 ```bash
 cd server
 composer update
