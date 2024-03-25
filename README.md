@@ -48,15 +48,17 @@ cd client
 npm install
 ```
 IF the project name is recipe-hub-master
-then in your client folder
+then go to client folder
 go to .env file
 change the url to 
 > http://localhost/recipe-hub-master/server/public/images
+<br>
 and in src folder
 go to axios.js
 change the baseUrl to
 > http://localhost/recipe-hub-master/server/public/images
-
+<br>
+then run
 ```bash
 npm run serve
 ```
