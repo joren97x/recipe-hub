@@ -8,7 +8,10 @@ Requirements
 > composer
 
 put the project in xampp/htdocs 
+open the folder in vs code
 
+open a new terminal 
+> use bash or git bash
 ### server
 
 ```bash
@@ -16,12 +19,44 @@ cd server
 composer update
 cp .env.example .env
 php artisan key:generate
+```
+at .env file 
+replace the line 22 to 27 to this
+```bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=recipe-hub
+DB_USERNAME=root
+DB_PASSWORD=
+```
+and at line 65 add this
+```bash
+APP_SECRET_KEY='secret_key'
+```
+save it and run this
+```bash
 php artisan migrate
 ```
 
+
+in a new terminal
+> use bash or git bash
 ### client
 ```bash
 cd client
 npm install
+```
+IF the project name is recipe-hub-master
+then in your client folder
+go to .env file
+change the url to 
+> http://localhost/recipe-hub-master/server/public/images
+and in src folder
+go to axios.js
+change the baseUrl to
+> http://localhost/recipe-hub-master/server/public/images
+
+```bash
 npm run serve
 ```
