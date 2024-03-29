@@ -45,10 +45,10 @@
     <div>
         <v-toolbar style="background-color: rgb(217, 237, 191);">
             <v-toolbar-title> 
-                <router-link to="/" class="text-decoration-none font-weight-bold">Logo or some shit</router-link>
+                <router-link to="/" class="text-decoration-none text-h5 font-weight-bold">RECIPE HUB</router-link>
             </v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-text-field class="mt-6 me-4" v-model="search" variant="outlined" label="Search for recipes..." density="compact">
+            <v-text-field class="mt-6 me-4" v-model="search" variant="solo" label="Search for recipes..." density="compact">
                 <v-menu activator="parent">
                     <v-list v-if="items">
                         <v-list-item v-for="item in items" :key="item.id" :to="`/recipes/${item.id}`">{{item.name}}</v-list-item>

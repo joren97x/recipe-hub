@@ -14,7 +14,7 @@
                         <p class="my-4">
                             Lorem ipsum dolor sit amet. chat, does she miss me? consectetur adipisicing elit. Esse in mollitia impedit quo aliquam praesentium?
                         </p>
-                        <v-btn color="orange" size="large" to="/recipes" class="text-white">Call to action button :V</v-btn>
+                        <v-btn color="orange" size="large" to="/recipes" class="text-white">Call to action button</v-btn>
                     </div>
                 </v-col>
                 <v-col cols="6">
